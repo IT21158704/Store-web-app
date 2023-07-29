@@ -8,7 +8,7 @@ function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signup, {error, isLoading, isError}] =useSignupMutation();
+    const [signup, {error, isLoading, isError, isSuccess}] =useSignupMutation();
   
     function handleSignup(e){
     e.preventDefault();
@@ -23,6 +23,7 @@ function Signup() {
                 <Form style={{width: "100%"}} onSubmit={handleSignup}>
                     <h1>Create an account</h1>
                     {isError && <Alert variant='danger'>{error.data}</Alert>}
+                    {isSuccess && <Alert variant='success'>Account Created</Alert>}
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
                         <Form.Control type="text" placeholder="Enter Name" value={name} required 

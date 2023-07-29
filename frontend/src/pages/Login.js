@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
-import {Button, Container, Row,  Col, Form} from 'react-bootstrap';
+import {Button, Container, Row,  Col, Form, Alert} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {useLoginMutation} from '../services/appApi'
 
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [login, { error, isError, isLoading, isSuccess }] = useLoginMutation();
+
+    function handleLogin(e){
+        e.preventDefault();
+        login({ email, password })
+    }
   return (
     <Container>
         <Row>
             <Col md={6} className="login__form--container">
-                <Form style={{width: "100%"}}>
+                <Form style={{width: "100%"}} onSubmit={handleLogin}>
                     <h1>Login to your account</h1>
+                    {isError && <Alert variant='danger'>{error.data}</Alert>}
                     <Form.Group>
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" placeholder="Enter Email" value={email} required 
@@ -25,7 +33,9 @@ function Login() {
                     </Form.Group>
                     
                     <Form.Group>
-                        <Button type='submit' className=' mt-3'>Login</Button>
+                        <Button type='submit' className=' mt-3' disabled={isLoading}>
+                            Login
+                        </Button>
                     </Form.Group>
                     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
                 </Form>
